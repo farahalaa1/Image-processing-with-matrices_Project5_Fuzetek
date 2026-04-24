@@ -251,7 +251,12 @@ Image adjustContrast(const Image& input, float factor) {
         for (int x = 0; x < width; x++) {
             for (int c = 0; c < channels; c++) {
                 float new_val = factor * (input(y, x, c) - 128) + 128;
-                output(y, x, c) = max(0, min(255, (int)new_val));
+                if (!std::isfinite(new_val)) {
+                    new_val = (new_val > 0.0f) ? 255.0f : 0.0f;
+                } else {
+                    new_val = std::clamp(new_val, 0.0f, 255.0f);
+                }
+                output(y, x, c) = static_cast<int>(new_val);
             }
         }
     }
