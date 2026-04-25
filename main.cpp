@@ -338,7 +338,7 @@ Image adjustContrast(const Image& input, float factor)
                 if (!std::isfinite(new_val)) {
                     new_val = (new_val > 0.0f) ? 255.0f : 0.0f;
                 } else {
-                    new_val = std::clamp(new_val, 0.0f, 255.0f);
+                    new_val = max(0.0f, min(255.0f, new_val));
                 }
                 output(y, x, c) = static_cast<int>(new_val);
             }
