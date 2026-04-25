@@ -180,11 +180,21 @@ public:
  *    - Set the grayscale value in the output image
  * 3. Return the grayscale image
  */
+
 Image convertToGrayscale(const Image& input)
 {
     int height = input.getHeight();
     int width = input.getWidth();
     Image output(width, height, 1); // Single channel for grayscale
+
+    for(int i =0;i<height ; i++ ){
+        for(int j=0 ; j<width ; j++){
+            int R = input(i,j,0);
+            int G = input(i,j,1);
+            int B = input(i,j,2);
+            output(i,j,0)=int(round(0.299*R + 0.587*G + 0.114*B));
+        }
+    }
 
     // TODO: Implement this function
     // For each pixel:
@@ -283,6 +293,16 @@ Image adjustBrightness(const Image& input, int value)
     int width = input.getWidth();
     int channels = input.getChannels();
     Image output(width, height, channels);
+
+    for(int i =0;i<height ; i++ ){
+        for(int j=0 ; j<width ; j++){
+            for(int c=0 ;c<channels;c++){
+                int N = input(i,j,c) + value;
+                output(i,j,c)=max(0,min(255,N));
+
+            }
+        }
+    }
 
     // TODO: Implement this function
     // For each pixel and each channel:
